@@ -44,11 +44,11 @@ namespace wali {
             for(size_t i = updatable_nodes.size(); i < nno; i++) {
               // These nodes are being created proactively. They aren't referenced in the 
               // graphs yet, so don't add them to roots.
-              RegExp * r = new RegExp(currentSatProcess, this, i,se->zero());
+              auto r = std::shared_ptr<RegExp>(new RegExp(currentSatProcess, this, i,se->zero()));
               updatable_nodes.push_back(r);
             }
             // Create the desired updatable node, and add it to roots
-            reg_exp_t r = new RegExp(currentSatProcess, this, nno, se);
+            reg_exp_t r = std::shared_ptr<RegExp>(new RegExp(currentSatProcess, this, nno, se));
 #if defined(PPP_DBG) && PPP_DBG >= 0
             reg_exp_key_t insKey(r->type, r);
             rootsInSatProcess.insert(insKey, r);
@@ -260,7 +260,7 @@ namespace wali {
           }
 
           vector<long int> others;
-          reg_exp_key_t rkey(type, this);
+          reg_exp_key_t rkey(type, reg_exp_t(this));
           hash_reg_exp_key hrek;
           me = hrek(rkey);
           if(seen.find(me) != seen.end()){
@@ -375,7 +375,7 @@ namespace wali {
             reg_exp_key_t rkey(Star, r);
             reg_exp_hash_t::iterator it = reg_exp_hash.find(rkey);
             if(it == reg_exp_hash.end()) {
-                reg_exp_t res = new RegExp(currentSatProcess, this, Star, r);
+                reg_exp_t res(new RegExp(currentSatProcess, this, Star, r));
                 reg_exp_hash.insert(rkey, res);
 
 #if defined(PPP_DBG) && PPP_DBG >= 0
@@ -442,7 +442,7 @@ namespace wali {
                 // NAK - fold this if underneath the upper one
                 //     - didn't make sense the other way.
                 if(it == reg_exp_hash.end()) {
-                    reg_exp_t res = new RegExp(currentSatProcess, this, Combine, r1, r2);
+                    reg_exp_t res(new RegExp(currentSatProcess, this, Combine, r1, r2));
                     reg_exp_hash.insert(rkey2, res);
 
 #if defined(PPP_DBG) && PPP_DBG >= 0
@@ -500,7 +500,7 @@ namespace wali {
             reg_exp_key_t rkey(Extend, r1, r2);
             reg_exp_hash_t::iterator it = reg_exp_hash.find(rkey);
             if(it == reg_exp_hash.end()) {
-                reg_exp_t res = new RegExp(currentSatProcess, this, Extend, r1, r2);
+                reg_exp_t res(new RegExp(currentSatProcess, this, Extend, r1, r2));
                 reg_exp_hash.insert(rkey, res);
 
 #if defined(PPP_DBG) && PPP_DBG >= 0
@@ -538,7 +538,7 @@ namespace wali {
 
             const_reg_exp_hash_t::iterator it = const_reg_exp_hash.find(se);
             if(it == const_reg_exp_hash.end()) {
-                reg_exp_t res = new RegExp(currentSatProcess, this, se);
+                reg_exp_t res(new RegExp(currentSatProcess, this, se));
                 const_reg_exp_hash.insert(se, res);
 #if defined(PPP_DBG) && PPP_DBG >= 0
                 reg_exp_key_t insKey(res->type, res);
@@ -574,9 +574,9 @@ namespace wali {
           graphLabelsInSatProcess.clear();
           updatable_nodes.clear();
          
-          reg_exp_zero = new RegExp(currentSatProcess, this, se->zero());
+          reg_exp_zero = reg_exp_t(new RegExp(currentSatProcess, this, se->zero()));
           reg_exp_key_t insZeroKey(reg_exp_zero->type, reg_exp_zero);
-          reg_exp_one = new RegExp(currentSatProcess, this, se->one());
+          reg_exp_one = reg_exp_t(new RegExp(currentSatProcess, this, se->one()));
           reg_exp_key_t insOneKey(reg_exp_one->type, reg_exp_one);
 #if defined(PPP_DBG) && PPP_DBG >= 0
           rootsInSatProcess.insert(insZeroKey, reg_exp_zero);
@@ -654,7 +654,7 @@ namespace wali {
             }
 
             if(r->type == Star || r->type == Combine) {
-                reg_exp_t res = new RegExp(currentSatProcess, this, r->value->zero());
+                reg_exp_t res(new RegExp(currentSatProcess, this, r->value->zero()));
 
                 list<reg_exp_t>::iterator it;
                 for(it = r->children.begin(); it != r->children.end(); it++) {
@@ -733,7 +733,7 @@ namespace wali {
                 heap.erase(min_pos);
                 min_pos = next_it;
 
-                reg_exp_t res = new RegExp(currentSatProcess, this, Extend, r1, r2);
+                reg_exp_t res(new RegExp(currentSatProcess, this, Extend, r1, r2));
                 res->value = r->value;
                 res->last_seen = r->last_seen;
                 res->last_change = r->last_change;
@@ -814,7 +814,7 @@ namespace wali {
                     cache[r] = ch;
                     return ch;
                 }
-                reg_exp_t res = new RegExp(currentSatProcess, this, Star,ch);
+                reg_exp_t res(new RegExp(currentSatProcess, this, Star,ch));
                 res->last_seen = r->last_seen;
                 res->last_change = r->last_change;
                 res->value = r->value;
@@ -858,11 +858,11 @@ namespace wali {
             }
 
             if(r1->type == Constant && r2->type == Constant) {
-                reg_exp_t res = new RegExp(currentSatProcess, this, r1->value->combine(r2->value));
+                reg_exp_t res(new RegExp(currentSatProcess, this, r1->value->combine(r2->value)));
                 STAT(stats.ncombine++);
                 return res;
             }
-            reg_exp_t res = new RegExp(currentSatProcess, this, r1->value->zero());
+            reg_exp_t res(new RegExp(currentSatProcess, this, r1->value->zero()));
             res->type = Combine;
 
             if(r1->type == Combine && r2->type == Combine) {
@@ -870,7 +870,7 @@ namespace wali {
                 reg_exp_t fc1 = r1->children.front();
                 reg_exp_t fc2 = r2->children.front();
                 if(fc1->type == Constant && fc2->type == Constant) {
-                    reg_exp_t fc = new RegExp(currentSatProcess, this, fc1->value->combine(fc2->value));
+                    reg_exp_t fc(new RegExp(currentSatProcess, this, fc1->value->combine(fc2->value)));
                     STAT(stats.ncombine++);
                     res->children.push_back(fc);
                     res->children.insert(res->children.end(), ++r1->children.begin(), r1->children.end());
@@ -889,7 +889,7 @@ namespace wali {
 
                 reg_exp_t fc2 = r2->children.front();
                 if(fc2->type == Constant) {
-                    reg_exp_t fc = new RegExp(currentSatProcess, this, fc2->value->combine(r1->value));
+                    reg_exp_t fc(new RegExp(currentSatProcess, this, fc2->value->combine(r1->value)));
                     STAT(stats.ncombine++);
                     res->children.push_back(fc);
                     res->children.insert(res->children.end(), ++r2->children.begin(), r2->children.end());
@@ -900,7 +900,7 @@ namespace wali {
 
                 reg_exp_t fc1 = r1->children.front();
                 if(fc1->type == Constant) {
-                    reg_exp_t fc = new RegExp(currentSatProcess, this, fc1->value->combine(r2->value));
+                    reg_exp_t fc(new RegExp(currentSatProcess, this, fc1->value->combine(r2->value)));
                     STAT(stats.ncombine++);
                     res->children.push_back(fc);
                     res->children.insert(res->children.end(), ++r1->children.begin(), r1->children.end());
@@ -930,11 +930,11 @@ namespace wali {
         reg_exp_t RegExpDag::compressExtend(reg_exp_t r1, reg_exp_t r2) {
 #ifndef COMMUTATIVE_EXTEND
             if(r1->type == Constant && r2->type == Constant) {
-                reg_exp_t res = new RegExp(currentSatProcess, this, r1->value->extend(r2->value));
+                reg_exp_t res(new RegExp(currentSatProcess, this, r1->value->extend(r2->value)));
                 STAT(stats.nextend++);
                 return res;
             }
-            reg_exp_t res = new RegExp(currentSatProcess, this, r1->value->zero());
+            reg_exp_t res(new RegExp(currentSatProcess, this, r1->value->zero()));
             res->type = Extend;
 
             if(r1->type == Extend && r2->type == Extend) {
@@ -942,7 +942,7 @@ namespace wali {
                 reg_exp_t lc = r1->children.back();
                 reg_exp_t fc = r2->children.front();
                 if(lc->type == Constant && fc->type == Constant) {
-                    reg_exp_t mc = new RegExp(currentSatProcess, this, lc->value->extend(fc->value));
+                    reg_exp_t mc(new RegExp(currentSatProcess, this, lc->value->extend(fc->value)));
                     STAT(stats.nextend++);
                     res->children.insert(res->children.end(), r1->children.begin(), --r1->children.end());
                     res->children.push_back(mc);
@@ -957,7 +957,7 @@ namespace wali {
             if(r1->type == Constant && r2->type == Extend) {
                 reg_exp_t fc = r2->children.front();
                 if(fc->type == Constant) {
-                    reg_exp_t f = new RegExp(currentSatProcess, this, r1->value->extend(fc->value));
+                    reg_exp_t f(new RegExp(currentSatProcess, this, r1->value->extend(fc->value)));
                     STAT(stats.nextend++);
                     res->children.push_back(f);
                     res->children.insert(res->children.end(), ++r2->children.begin(), r2->children.end());
@@ -967,7 +967,7 @@ namespace wali {
             if(r1->type == Extend && r2->type == Constant) {
                 reg_exp_t lc = r1->children.back();
                 if(lc->type == Constant) {
-                    reg_exp_t l = new RegExp(currentSatProcess, this, lc->value->extend(r2->value));
+                    reg_exp_t l(new RegExp(currentSatProcess, this, lc->value->extend(r2->value)));
                     STAT(stats.nextend++);
                     res->children.insert(res->children.end(), r1->children.begin(), --r1->children.end());
                     res->children.push_back(l);

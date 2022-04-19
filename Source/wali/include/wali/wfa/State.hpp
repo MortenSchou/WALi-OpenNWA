@@ -8,7 +8,6 @@
 #include "wali/Common.hpp"
 #include "wali/Printable.hpp"
 #include "wali/Markable.hpp"
-#include "wali/Countable.hpp"
 #include "wali/SemElem.hpp"
 #include "wali/wfa/TransSet.hpp"
 #include <list>
@@ -41,7 +40,7 @@ namespace wali
      * @see WFA
      * @see SemElem
      */
-    class State : public Printable, public Markable, public Countable
+    class State : public Printable, public Markable
     {
       public: // friends
         friend class WFA;

@@ -6,7 +6,6 @@
  */
 
 #include "wali/Common.hpp"
-#include "wali/Countable.hpp"
 
 namespace wali
 {
@@ -19,7 +18,7 @@ namespace wali
    * (i.e., do not place a Markable item on two worklists at the same time).
    */
 
-  template< typename T > class Worklist : public Countable
+  template< typename T > class Worklist
   {
 
     public:

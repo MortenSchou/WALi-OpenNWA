@@ -38,12 +38,12 @@ namespace wali
 
       sem_elem_t one() const
       {
-        return new ReversedSemElem(backing_elem_->one());
+        return sem_elem_t(new ReversedSemElem(backing_elem_->one()));
       }
 
       sem_elem_t zero() const
       {
-        return new ReversedSemElem(backing_elem_->zero());
+        return sem_elem_t(new ReversedSemElem(backing_elem_->zero()));
       }
 
       sem_elem_t extend(SemElem * se)
@@ -51,7 +51,7 @@ namespace wali
         ReversedSemElem * that = dynamic_cast<ReversedSemElem*>(se);
         assert(that);
         
-        return new ReversedSemElem(that->backing_elem_->extend(this->backing_elem_));
+        return sem_elem_t(new ReversedSemElem(that->backing_elem_->extend(this->backing_elem_)));
       }
 
       sem_elem_t combine( SemElem * se )
@@ -59,7 +59,7 @@ namespace wali
         ReversedSemElem * that = dynamic_cast<ReversedSemElem*>(se);
         assert(that);
 
-        return new ReversedSemElem(this->backing_elem_->combine(that->backing_elem_));
+        return sem_elem_t(new ReversedSemElem(this->backing_elem_->combine(that->backing_elem_)));
       }
 
       bool equal( SemElem * se ) const
@@ -93,12 +93,12 @@ namespace wali
         ReversedSemElem * that = dynamic_cast<ReversedSemElem*>(se);
         assert(that);
 
-        return new ReversedSemElem(this->backing_elem_->diff(that->backing_elem_));
+        return sem_elem_t(new ReversedSemElem(this->backing_elem_->diff(that->backing_elem_)));
       }
 
       sem_elem_t quasi_one() const
       {
-        return new ReversedSemElem(backing_elem_->quasi_one());
+        return sem_elem_t(new ReversedSemElem(backing_elem_->quasi_one()));
       }
 
       std::pair<sem_elem_t,sem_elem_t> delta( SemElem * se )
@@ -114,7 +114,7 @@ namespace wali
 
       sem_elem_t star()
       {
-        return new ReversedSemElem(backing_elem_->star());
+        return sem_elem_t(new ReversedSemElem(backing_elem_->star()));
       }
 
       sem_elem_t
@@ -126,8 +126,8 @@ namespace wali
         ReversedSemElem * next_sub = dynamic_cast<ReversedSemElem*>(subtrahend.get());
         assert(next_sub);
 
-        return new ReversedSemElem(next_down->backing_elem_->extendAndDiff(this->backing_elem_,
-                                                                           next_sub->backing_elem_));
+        return sem_elem_t(new ReversedSemElem(next_down->backing_elem_->extendAndDiff(this->backing_elem_,
+                                                                           next_sub->backing_elem_)));
       }
 
       bool
@@ -157,7 +157,7 @@ namespace wali
     sem_elem_t
     wrapToReversedSemElem(sem_elem_t se)
     {
-      return new ReversedSemElem(se);
+      return sem_elem_t(new ReversedSemElem(se));
     }
 
   }

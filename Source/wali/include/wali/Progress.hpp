@@ -1,7 +1,6 @@
 #ifndef wali_PROGRESS_GUARD
 #define wali_PROGRESS_GUARD 1
 
-#include "wali/Countable.hpp"
 #include <memory>
 
 /**
@@ -21,7 +20,7 @@ namespace wali
      * processing.
      */
 
-    class Progress : public Countable
+    class Progress
     {
     public:
         virtual ~Progress() {};

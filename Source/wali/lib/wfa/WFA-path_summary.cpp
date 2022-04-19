@@ -392,7 +392,7 @@ namespace wali
 
       sem_elem_t one = wt->one();
       if (getQuery() == INORDER) {
-        one = std::make_shared<wali::SemElem> (new domains::ReversedSemElem(one));
+        one = sem_elem_t(new domains::ReversedSemElem(one));
       }
 
       for (std::set<Key>::const_iterator fit = getFinalStates().begin();
@@ -455,9 +455,6 @@ namespace wali
           else {
             weight = wt->zero();
           }
-        }
-        else {
-          weight = wt->zero();
         }
 
         if (getQuery() == INORDER) {

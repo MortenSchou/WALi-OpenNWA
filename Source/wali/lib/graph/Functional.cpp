@@ -36,17 +36,17 @@ SemElemFunctional::SemElemFunctional(int n) :
 
 functional_t SemElemFunctional::constant(sem_elem_tensor_t wt)
 {
-  return new SemElemFunctional(wt);
+  return functional_t(new SemElemFunctional(wt));
 }
 
 functional_t SemElemFunctional::in(int n)
 {
-  return new SemElemFunctional(n);
+  return functional_t(new SemElemFunctional(n));
 }
 
 functional_t SemElemFunctional::extend(functional_t lhs, functional_t rhs)
 {
-  functional_t res = new SemElemFunctional();
+  functional_t res(new SemElemFunctional());
   res->type = Extend;
   res->lhs = lhs;
   res->rhs = rhs;
@@ -55,7 +55,7 @@ functional_t SemElemFunctional::extend(functional_t lhs, functional_t rhs)
 
 functional_t SemElemFunctional::combine(functional_t lhs, functional_t rhs)
 {
-  functional_t res = new SemElemFunctional();
+  functional_t res(new SemElemFunctional());
   res->type = Combine;
   res->lhs = lhs;
   res->rhs = rhs;
@@ -64,7 +64,7 @@ functional_t SemElemFunctional::combine(functional_t lhs, functional_t rhs)
 
 functional_t SemElemFunctional::tensor(functional_t lhs, functional_t rhs)
 {
-  functional_t res = new SemElemFunctional();
+  functional_t res(new SemElemFunctional());
   res->type = Tensor;
   res->lhs = lhs;
   res->rhs = rhs;
@@ -73,7 +73,7 @@ functional_t SemElemFunctional::tensor(functional_t lhs, functional_t rhs)
 
 functional_t SemElemFunctional::detensor(functional_t arg)
 {
-  functional_t res = new SemElemFunctional();
+  functional_t res(new SemElemFunctional());
   res->type = Detensor;
   res->lhs = arg;
   return res;
@@ -81,7 +81,7 @@ functional_t SemElemFunctional::detensor(functional_t arg)
 
 functional_t SemElemFunctional::detensorTranspose(functional_t arg)
 {
-  functional_t res = new SemElemFunctional();
+  functional_t res(new SemElemFunctional());
   res->type = DetensorTranspose;
   res->lhs = arg;
   return res;
@@ -89,7 +89,7 @@ functional_t SemElemFunctional::detensorTranspose(functional_t arg)
 
 functional_t SemElemFunctional::transpose(functional_t arg)
 {
-  functional_t res = new SemElemFunctional();
+  functional_t res(new SemElemFunctional());
   res->type = Transpose;
   res->lhs = arg;
   return res;
@@ -102,28 +102,28 @@ sem_elem_tensor_t SemElemFunctional::evaluate(IntraGraph * const gr)
     case Constant:
       return value;
     case In:
-      return boost::polymorphic_downcast<SemElemTensor*>(gr->getWeight(intra_nodeno).get());
+      return sem_elem_tensor_t(boost::polymorphic_downcast<SemElemTensor*>(gr->getWeight(intra_nodeno).get()));
     case Extend:
        lval = lhs->evaluate(gr);
        rval = rhs->evaluate(gr);
-      return boost::polymorphic_downcast<SemElemTensor*>(lval->extend(rval.get()).get());
+      return sem_elem_tensor_t(boost::polymorphic_downcast<SemElemTensor*>(lval->extend(rval.get()).get()));
     case Combine:
        lval = lhs->evaluate(gr);
        rval = rhs->evaluate(gr);
-      return boost::polymorphic_downcast<SemElemTensor*>(lval->combine(rval.get())).get());
+      return sem_elem_tensor_t(boost::polymorphic_downcast<SemElemTensor*>(lval->combine(rval.get()).get()));
     case Tensor:
        lval = lhs->evaluate(gr);
        rval = rhs->evaluate(gr);
-      return boost::polymorphic_downcast<SemElemTensor*>(lval->tensor(rval.get()).get());
+      return sem_elem_tensor_t(boost::polymorphic_downcast<SemElemTensor*>(lval->tensor(rval.get()).get()));
     case Detensor:
        val = lhs->evaluate(gr);
-      return boost::polymorphic_downcast<SemElemTensor*>(val->detensor().get());
+      return sem_elem_tensor_t(boost::polymorphic_downcast<SemElemTensor*>(val->detensor().get()));
     case DetensorTranspose:
        val = lhs->evaluate(gr);
-      return boost::polymorphic_downcast<SemElemTensor*>(val->detensorTranspose().get());
+      return sem_elem_tensor_t(boost::polymorphic_downcast<SemElemTensor*>(val->detensorTranspose().get()));
     case Transpose:
        val = lhs->evaluate(gr);
-       return boost::polymorphic_downcast<SemElemTensor*>(val->transpose().get());
+       return sem_elem_tensor_t(boost::polymorphic_downcast<SemElemTensor*>(val->transpose().get()));
     default:
       llvm_unreachable("[SemElemFunctiona::evaluate] Unknown case\n");
   }

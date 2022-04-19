@@ -68,10 +68,10 @@ namespace
       target.addTrans(t->from(),
                       t->stack(),
                       t->to(),
-                      new wali::domains::SemElemSet(computer,
+                      wali::sem_elem_t(new wali::domains::SemElemSet(computer,
                                                     include_zeroes,
                                                     t->weight(),
-                                                    es));
+                                                    es)));
     }
   };
   

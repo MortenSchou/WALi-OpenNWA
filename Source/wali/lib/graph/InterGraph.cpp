@@ -176,7 +176,6 @@ namespace wali {
           newtonGr = NULL;
           runningNewton = false;
           dag = new RegExpDag();
-          count = 0;
           isOutputAutomatonTensored = false;
         }
 
@@ -744,7 +743,7 @@ namespace wali {
             for(i = 0; i < n;i++) {
               int j = intra_graph_uf->find(i);
               if(nodes[j].sccgr == NULL){
-                nodes[j].sccgr = new SCCGraph();
+                nodes[j].sccgr = std::make_shared<SCCGraph>();
                 scc_gr_list.push_back(nodes[j].sccgr);
               }
               nodes[i].sccgr = nodes[j].sccgr;
@@ -1568,10 +1567,10 @@ namespace wali {
           Transition t2(nodes[i].trans.tgt,0,0);
           if(newtonGr)
             ca->addEdge(get_number(intra_node_map,state,ca), get_number(intra_node_map, nodes[i].trans.tgt,ca), 
-                std::make_shared<wali::SemElem>(correct(newtonGr->get_weight(nodes[i].intra_nodeno).get())));
+                sem_elem_t(correct(newtonGr->get_weight(nodes[i].intra_nodeno).get())));
           else
-            ca->addEdge(get_number(intra_node_map,state,ca), get_number(intra_node_map, nodes[i].trans.tgt,ca), 
-                std::make_shared<wali::SemElemTensor>(correct(nodes[i].gr->get_weight(nodes[i].intra_nodeno).get())));
+            ca->addEdge(get_number(intra_node_map,state,ca), get_number(intra_node_map, nodes[i].trans.tgt,ca),
+                sem_elem_t(correct(nodes[i].gr->get_weight(nodes[i].intra_nodeno).get())));
           worklist.push_back(nodes[i].trans.tgt);
         }
       }
@@ -1592,9 +1591,9 @@ namespace wali {
           int t1 = get_number(intra_node_map,nodes[i].trans.src,ca);
           int t2 = get_number(intra_node_map,nodes[i].trans.tgt,ca);
           if(newtonGr)
-            ca->addEdge(t1, t2, std::make_shared<wali::SemElemTensor>(correct(newtonGr->get_weight(nodes[i].intra_nodeno).get())));
+            ca->addEdge(t1, t2, sem_elem_t(correct(newtonGr->get_weight(nodes[i].intra_nodeno).get())));
           else
-            ca->addEdge(t1, t2, std::make_shared<wali::SemElemTensor>(correct(nodes[i].gr->get_weight(nodes[i].intra_nodeno).get())));
+            ca->addEdge(t1, t2, sem_elem_t(correct(nodes[i].gr->get_weight(nodes[i].intra_nodeno).get())));
           if(states_visited.find(nodes[i].trans.tgt) == states_visited.end()) {
             worklist.push_back(nodes[i].trans.tgt);
           }

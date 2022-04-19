@@ -27,7 +27,7 @@ namespace wali
 
     sem_elem_t KeepBoth::make_weight( sem_elem_t lhs, sem_elem_t rhs )
     {
-      return new SemElemPair(lhs,rhs);
+      return sem_elem_t(new SemElemPair(lhs,rhs));
     }
 
   } // namespace wfa

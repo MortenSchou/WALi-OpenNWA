@@ -5,26 +5,28 @@
 
 #include "wali/SemElemPair.hpp"
 
+#include <utility>
+
 namespace wali
 {
   SemElemPair::SemElemPair( SemElem* f,SemElem* s ) :
     first(f),second(s) {}
 
   SemElemPair::SemElemPair( sem_elem_t f,sem_elem_t s ) :
-    first(f),second(s) {}
+    first(std::move(f)),second(std::move(s)) {}
 
-  SemElemPair::~SemElemPair() {}
+  SemElemPair::~SemElemPair() = default;
 
   // return the One element of the semiring
   sem_elem_t SemElemPair::one() const
   {
-    return std::make_shared<wali::SemElem>(new SemElemPair( first->one(),second->one() ));
+    return std::shared_ptr<wali::SemElem>(new SemElemPair( first->one(),second->one() ));
   }
 
   // return the Zero element of the semiring
   sem_elem_t SemElemPair::zero() const
   {
-    return std::make_shared<wali::SemElem>(new SemElemPair( first->zero(),second->zero() ));
+    return std::shared_ptr<wali::SemElem>(new SemElemPair( first->zero(),second->zero() ));
   }
 
   // Perform the extend operation
@@ -37,7 +39,7 @@ namespace wali
 
     sem_elem_t fnew = first->extend(that->first);
     sem_elem_t snew = second->extend(that->second);
-    return std::make_shared<wali::SemElem>(new SemElemPair(fnew,snew));
+    return std::shared_ptr<wali::SemElem>(new SemElemPair(fnew,snew));
   }
 
   // Perform the combine operation
@@ -50,7 +52,7 @@ namespace wali
 
     sem_elem_t fnew = first->combine(that->first);
     sem_elem_t snew = second->combine(that->second);
-    return std::make_shared<wali::SemElem>(new SemElemPair(fnew,snew));
+    return std::shared_ptr<wali::SemElem>(new SemElemPair(fnew,snew));
   }
 
   // Equality comparison between two semiring elements
@@ -85,7 +87,7 @@ namespace wali
     SemElemPair * that = dynamic_cast< SemElemPair* >(se);
     assert( 0 != that );
 
-    return std::make_shared<wali::SemElem>(new SemElemPair(
+    return std::shared_ptr<wali::SemElem>(new SemElemPair(
         first->diff(that->first),
         second->diff(that->second) ));
   }
@@ -93,7 +95,7 @@ namespace wali
   // Perform the quasi_one operation
   sem_elem_t SemElemPair::quasi_one() const
   {
-    return std::make_shared<wali::SemElem>(new SemElemPair(first->quasi_one(), second->quasi_one()));
+    return std::shared_ptr<wali::SemElem>(new SemElemPair(first->quasi_one(), second->quasi_one()));
   }
 
   // Perform the delta operation

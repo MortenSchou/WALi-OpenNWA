@@ -6,7 +6,6 @@
  */
 
 #include "wali/Common.hpp"
-#include "wali/Countable.hpp"
 #include "wali/Printable.hpp"
 #include "wali/hm_hash.hpp"
 
@@ -15,7 +14,7 @@ namespace wali
   /**
    * @class KeySource
    */
-  class KeySource : public Printable, public Countable
+  class KeySource : public Printable
   {
   public:
     KeySource() {}

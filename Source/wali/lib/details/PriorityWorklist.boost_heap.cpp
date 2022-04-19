@@ -33,7 +33,7 @@ namespace wali
         assert(t->worklistData() == NULL);
         t->mark();
         typename pwl_t::handle_type handle = workset.push(t);
-        t->setWorklistData(new HeapHandleData(handle));
+        t->setWorklistData(std::make_shared<HeapHandleData>(handle));
         //std::cout << "Adding trans @ " << t << std::endl;
         return true;
       }

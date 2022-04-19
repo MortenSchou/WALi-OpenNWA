@@ -7,7 +7,6 @@
 
 #include "wali/Common.hpp"
 #include "wali/Printable.hpp"
-#include "wali/Countable.hpp"
 #include "wali/Markable.hpp"
 #include "wali/SemElem.hpp"
 #include <memory>
@@ -42,7 +41,7 @@ namespace wali
      * @see rcmix
      */
 
-    class Rule : public Printable, public Countable
+    class Rule : public Printable
     {
 
       public:
@@ -202,7 +201,7 @@ namespace wali
         }
 
         rule_t & operator=( Rule * r ) {
-          rc = std::make_shared<wali::wpds::Rule>(r);
+          rc = std::shared_ptr<wali::wpds::Rule>(r);
           return *this;
         }
 
@@ -226,11 +225,11 @@ namespace wali
         }
 
         bool is_empty() const {
-          return (rc==false);
+          return !is_valid();
         }
 
         bool is_valid() const {
-          return (rc==true);
+          return (rc.operator bool());
         }
 
         bool operator == (const rule_t& rhs) const{

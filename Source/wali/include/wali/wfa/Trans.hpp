@@ -9,7 +9,6 @@
 #include <iostream>
 #include "wali/Common.hpp"
 #include "wali/Printable.hpp"
-#include "wali/Countable.hpp"
 #include "wali/Markable.hpp"
 #include "wali/SemElem.hpp"
 #include "wali/KeyContainer.hpp"

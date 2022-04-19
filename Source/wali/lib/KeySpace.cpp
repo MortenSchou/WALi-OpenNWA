@@ -38,7 +38,7 @@ namespace wali
    * @param key_src_t ks for which a key is sought
    * @return wali_key_t associated with parameter KeySource
    */
-  wali_key_t KeySpace::getKey( key_src_t ks )
+  wali_key_t KeySpace::getKey( const key_src_t& ks )
   {
     ks_hash_map_t::iterator it = keymap.find(ks);
     wali_key_t key;
@@ -60,7 +60,7 @@ namespace wali
    */
   Key KeySpace::getKey( const std::string& s )
   {
-    return (s == "") ? WALI_EPSILON : getKey( new StringSource(s) );
+    return (s == "") ? WALI_EPSILON : getKey( std::make_shared<StringSource>(s) );
   }
 
   /**
@@ -70,7 +70,7 @@ namespace wali
   Key KeySpace::getKey( const char* s )
   {
     return ((s == NULL) || (strlen(s) == 0)) ?
-      WALI_EPSILON : getKey( new StringSource(s) );
+      WALI_EPSILON : getKey( std::make_shared<StringSource>(s) );
   }
 
   /**
@@ -79,12 +79,12 @@ namespace wali
    */
   Key KeySpace::getKey( int i )
   {
-    return getKey( new IntSource(i) );
+    return getKey( std::make_shared<IntSource>(i) );
   }
 
   Key KeySpace::getKey( const llvm::Value *v )
   {
-    return getKey( new LLVMValueSource(v) );
+    return getKey( std::make_shared<LLVMValueSource>(v) );
   }
 
   /**
@@ -93,13 +93,13 @@ namespace wali
    */
   Key KeySpace::getKey( Key k1, Key k2 )
   {
-    return getKey( new KeyPairSource(k1,k2) );
+    return getKey( std::make_shared<KeyPairSource>(k1,k2) );
   }
 
   // @author Amanda Burton
-  wali_key_t KeySpace::getKey( std::set<wali_key_t> kys )
+  wali_key_t KeySpace::getKey( const std::set<wali_key_t>& kys )
   {
-    return getKey( new KeySetSource(kys) );
+    return getKey( std::make_shared<KeySetSource>(kys) );
   }
 
 

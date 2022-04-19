@@ -39,7 +39,7 @@ namespace wali
         Union* un = new Union();
         un->add(lhs);
         un->add(rhs);
-        return std::make_shared<wali::regex::Regex>(un);
+        return std::shared_ptr<wali::regex::Regex>(un);
       }
     }
 
@@ -52,7 +52,7 @@ namespace wali
       else if( rhs->isOne() )
         return lhs;
       else
-        return std::make_shared<wali::regex::Regex>(new Concat(lhs,rhs));
+        return std::shared_ptr<wali::regex::Regex>(new Concat(lhs,rhs));
     }
 
     regex_t Regex::STAR( regex_t r )
@@ -62,7 +62,7 @@ namespace wali
       else if( r->isOne() ) // should be fine
         return r;
       else
-        return std::make_shared<wali::regex::Regex>(new Star(r));
+        return std::shared_ptr<wali::regex::Regex>(new Star(r));
     }
 
     static int next_alloc() {
@@ -165,7 +165,7 @@ namespace wali
 
       Regex* re = dynamic_cast<Regex*>(se);
       assert(re);
-      regex_t res = COMBINE(std::make_shared<wali::regex::Regex>(this),std::make_shared<wali::regex::Regex>(re));
+      regex_t res = COMBINE(std::shared_ptr<wali::regex::Regex>(this),std::shared_ptr<wali::regex::Regex>(re));
       wali::sem_elem_t ans(res.get());
       return ans;
     }
@@ -174,7 +174,7 @@ namespace wali
     {
       Regex* re = dynamic_cast<Regex*>(se);
       assert(re != 0);
-      regex_t r = EXTEND(std::make_shared<wali::regex::Regex>(this),std::make_shared<wali::regex::Regex>(re));
+      regex_t r = EXTEND(std::shared_ptr<wali::regex::Regex>(this),std::shared_ptr<wali::regex::Regex>(re));
       wali::sem_elem_t ans(r.get());
       return ans;
     }

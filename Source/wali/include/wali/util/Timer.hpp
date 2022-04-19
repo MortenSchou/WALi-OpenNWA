@@ -6,6 +6,7 @@
 #include <iostream>
 #include <cstdlib>
 #include <cstdio>
+#include <cassert>
 #include "wali/Common.hpp"
 #include "wali/Printable.hpp"
 #ifndef _WIN32

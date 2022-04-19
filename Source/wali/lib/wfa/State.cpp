@@ -18,7 +18,7 @@ namespace wali
     const std::string State::XMLNameTag("Name");
 
     State::State() :
-      Countable(),key(WALI_EPSILON),se(0),delta_se(0),quasi(0),tag(0)
+      key(WALI_EPSILON),se(0),delta_se(0),quasi(0),tag(0)
     {
       { // BEGIN DEBUGGING
         //print(*waliErr << "State():" << numStates) << std::endl;;
@@ -27,7 +27,7 @@ namespace wali
     }
 
     State::State( Key k, sem_elem_t W ) :
-      Countable(),key(k),accepting_weight(W->zero()),se(W),delta_se(W),quasi(W),tag(0)
+      key(k),accepting_weight(W->zero()),se(W),delta_se(W),quasi(W),tag(0)
     {
       if (!W) {
         *waliErr << "[WARNING] wfa::State created with a NULL weight\n";
@@ -41,7 +41,7 @@ namespace wali
     }
 
     State::State( const State& st ) :
-      IMarkable(),Printable(),Markable(),Countable(),
+      IMarkable(),Printable(),Markable(),
       key(st.key),accepting_weight(st.accepting_weight),se(st.se),delta_se(st.delta_se),quasi(st.quasi),tag(0)
     {
       { // BEGIN DEBUGGING

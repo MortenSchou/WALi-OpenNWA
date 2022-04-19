@@ -37,7 +37,7 @@ namespace wali
      * @param key_src_t ks for which a key is sought
      * @return wali::Key associated with parameter KeySource
      */
-    wali::Key getKey( key_src_t ks );
+    wali::Key getKey( const key_src_t& ks );
 
     /**
      * Wrapper method for createing a StringSource and
@@ -98,7 +98,7 @@ namespace wali
      * Wrapper method for creating a KeySetSource and
      * inserting it into the KeySpace
      */
-    wali::Key getKey( std::set<wali::Key> kys );
+    wali::Key getKey( const std::set<wali::Key>& kys );
 
     /**
      * Helper method that looks up the key and calls KeySource::print

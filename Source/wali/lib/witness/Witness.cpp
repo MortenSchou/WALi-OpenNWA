@@ -14,6 +14,7 @@
 #include <typeinfo>
 #include <map>
 #include <memory>
+#include <utility>
 
 namespace wali
 {
@@ -48,7 +49,7 @@ namespace wali
 
     std::shared_ptr<Witness> witness_t::getWitness( sem_elem_t se )
     {
-      std::shared_ptr<Witness> witness = std::make_shared<Witness>(dynamic_cast<Witness*>(se.get()));
+      std::shared_ptr<Witness> witness(dynamic_cast<Witness*>(se.get()));
       //se->print( std::cerr << "\n\t+++ " ) << std::endl;
       if( NULL == witness ) {
         *waliErr << "[WARNING] witness_t::getWitness - failed downcast.\n";
@@ -63,14 +64,14 @@ namespace wali
     int Witness::COUNT = 0;
 
     Witness::Witness( sem_elem_t set )
-      : user_se(set)
+      : user_se(std::move(set))
       , isEmpty(false)
     {
       COUNT++;
     }
 
     Witness::Witness( sem_elem_t se, bool ie)
-      : user_se(se)
+      : user_se(std::move(se))
       , isEmpty(ie)
     {
       min_length = 1UL;
@@ -96,7 +97,7 @@ namespace wali
 
     sem_elem_t Witness::one() const
     {
-      return std::make_shared<Witness>(new Witness(user_se->one(), true));
+      return std::shared_ptr<Witness>(new Witness(user_se->one(), true));
     }
 
     sem_elem_t Witness::zero() const
@@ -120,7 +121,7 @@ namespace wali
       assert(zit->second.get() != NULL);
       return zit->second;
 #else
-      return std::make_shared<Witness>(new Witness(user_zero, true));
+      return std::shared_ptr<Witness>(new Witness(user_zero, true));
 #endif
     }
 
@@ -139,9 +140,9 @@ namespace wali
         return std::make_shared<Witness>(that);
       }
       else if( that->isEmpty && that->isOne() ) {
-        return std::make_shared<Witness>(this);
+        return std::shared_ptr<Witness>(this);
       }
-      return std::make_shared<Witness>(new WitnessExtend( user_se->extend(that->user_se), this, that ));
+      return std::shared_ptr<Witness>(new WitnessExtend( user_se->extend(that->user_se), this, that ));
     }
 
     /*

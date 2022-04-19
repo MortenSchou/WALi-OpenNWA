@@ -17,7 +17,7 @@ namespace
   {
     SemElemSet::ElementSet set;
     set.insert(value);
-    sem_elem_t singleton = new SemElemSet(SemElemSet::KeepAllNonduplicates, false, value, set);
+    sem_elem_t singleton(new SemElemSet(SemElemSet::KeepAllNonduplicates, false, value, set));
 
     if (m.count(key) == 0) {
       m[key] = singleton;
@@ -131,13 +131,13 @@ namespace wali
           }
 
           sem_elem_t weight = weight_to_target->second;
-          sem_elem_t guard = new PositionKey<Key>(*source, *target);
+          sem_elem_t guard(new PositionKey<Key>(*source, *target));
           insert(map, guard, weight);
         } // for each target state
       } // for each source state
 
       assert(map.size() > 0u);
-      return new KeyedSemElemSet(map);
+      return sem_elem_t(new KeyedSemElemSet(map));
     }
 
 
@@ -152,12 +152,12 @@ namespace wali
            state != cell.end(); ++state)
       {
         sem_elem_t accept_weight = original_wfa.getState(*state)->acceptWeight();
-        sem_elem_t guard = new PositionKey<Key>(*state, *state);
+        sem_elem_t guard(new PositionKey<Key>(*state, *state));
         insert(map, guard, accept_weight);
       }
 
       assert(map.size() > 0u);
-      return new KeyedSemElemSet(map);
+      return sem_elem_t(new KeyedSemElemSet(map));
     }
     
 
@@ -170,7 +170,7 @@ namespace wali
       sem_elem_t weight = original_wfa.getSomeWeight()->one();
       insert(map, guard, weight);
 
-      return new KeyedSemElemSet(map);
+      return sem_elem_t(new KeyedSemElemSet(map));
     }
     
     

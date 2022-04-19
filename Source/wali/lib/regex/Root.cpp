@@ -5,6 +5,8 @@
 
 #include "wali/regex/Root.hpp"
 
+#include <utility>
+
 namespace wali 
 {
   namespace regex 
@@ -26,7 +28,7 @@ namespace wali
       else if (k == getIdKey())
         return ID();
       else
-        return new Root(k,se);
+        return regex_t(new Root(k,std::move(se)));
 
     }
 

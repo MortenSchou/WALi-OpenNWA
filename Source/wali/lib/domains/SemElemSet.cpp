@@ -201,14 +201,14 @@ namespace wali
       ElementSet es;
       //es.push_back(this->base_one);
       es.insert(this->base_one);
-      return new SemElemSet(this->keep_what, this->include_zeroes, this->base_one, es);
+      return std::make_shared<SemElemSet>(this->keep_what, this->include_zeroes, this->base_one, es);
     }
 
     
     sem_elem_t
     SemElemSet::zero() const
     {
-      return new SemElemSet(this->keep_what, this->include_zeroes, this->base_one);
+      return std::make_shared<SemElemSet>(this->keep_what, this->include_zeroes, this->base_one);
     }
     
 
@@ -221,7 +221,7 @@ namespace wali
       assert(this->include_zeroes == other->include_zeroes);
       assert(this->base_one->equal(other->base_one));
 
-      Ptr result = new SemElemSet(this->keep_what, this->include_zeroes, this->base_one);
+      Ptr result = std::make_shared<SemElemSet>(this->keep_what, this->include_zeroes, this->base_one);
 
       for (ElementSet::const_iterator this_element = this->elements.begin();
            this_element != this->elements.end(); ++this_element)
@@ -250,7 +250,7 @@ namespace wali
       assert(this->include_zeroes == other->include_zeroes);
       assert(this->base_one->equal(other->base_one));
 
-      Ptr result = new SemElemSet(this->keep_what, this->include_zeroes, this->base_one, this->elements);
+      Ptr result = std::make_shared<SemElemSet>(this->keep_what, this->include_zeroes, this->base_one, this->elements);
       for (ElementSet::const_iterator other_element = other->elements.begin();
            other_element != other->elements.end(); ++other_element)
       {

@@ -18,13 +18,13 @@ namespace wali {
   
   sem_elem_t ShortestPathSemiring::one() const
   {
-    static sem_elem_t elem = new ShortestPathSemiring(0);
+    static sem_elem_t elem = std::make_shared<ShortestPathSemiring>(0);
     return elem;
   }
 
   sem_elem_t ShortestPathSemiring::zero() const
   {
-    static sem_elem_t z = new ShortestPathSemiring((unsigned int)(-1));
+    static sem_elem_t z = std::make_shared<ShortestPathSemiring>((unsigned int)(-1));
     return z;
   }
 
@@ -43,7 +43,7 @@ namespace wali {
     assert(dynamic_cast<ShortestPathSemiring*>(rhs));
     
     ShortestPathSemiring* that = static_cast< ShortestPathSemiring* >(rhs);
-    return new ShortestPathSemiring(plus(v,that->v));
+    return std::make_shared<ShortestPathSemiring>(plus(v,that->v));
   }
 
   sem_elem_t ShortestPathSemiring::combine( SemElem* rhs )
@@ -51,7 +51,7 @@ namespace wali {
     assert(dynamic_cast<ShortestPathSemiring*>(rhs));
     
     ShortestPathSemiring* that = static_cast< ShortestPathSemiring* >(rhs); 
-    return new ShortestPathSemiring(min(v,that->v));
+    return std::make_shared<ShortestPathSemiring>(min(v,that->v));
   }
 
 

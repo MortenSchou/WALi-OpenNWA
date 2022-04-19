@@ -45,13 +45,13 @@ namespace wali {
   
     sem_elem_t RepresentativeString::one() const
     {
-      static sem_elem_t elem = new RepresentativeString("");
+      static sem_elem_t elem = std::make_shared<RepresentativeString>("");
       return elem;
     }
 
     sem_elem_t RepresentativeString::zero() const
     {
-      static sem_elem_t z = new RepresentativeString();
+      static sem_elem_t z = std::make_shared<RepresentativeString>();
       return z;
     }
 
@@ -64,7 +64,7 @@ namespace wali {
       assert(dynamic_cast<RepresentativeString*>(rhs));
       RepresentativeString* that = static_cast< RepresentativeString* >(rhs);
 
-      return new RepresentativeString(concat(this->_value, that->_value));
+      return std::make_shared<RepresentativeString>(concat(this->_value, that->_value));
     }
 
     sem_elem_t RepresentativeString::combine( SemElem* rhs )
@@ -72,7 +72,7 @@ namespace wali {
       assert(dynamic_cast<RepresentativeString*>(rhs));
       RepresentativeString* that = static_cast< RepresentativeString* >(rhs); 
 
-      return new RepresentativeString(min(this->_value, that->_value));
+      return std::make_shared<RepresentativeString>(min(this->_value, that->_value));
     }
 
 

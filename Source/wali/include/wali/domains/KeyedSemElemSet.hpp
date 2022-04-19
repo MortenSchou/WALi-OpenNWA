@@ -150,12 +150,12 @@ namespace wali
       sem_elem_t one() const {
         BackingMap m;
         m[one_key_] = one_value_;
-        return new KeyedSemElemSet(m);
+        return sem_elem_t(new KeyedSemElemSet(m));
       }
       
       sem_elem_t zero() const {
         BackingMap m;
-        return new KeyedSemElemSet(m, one_key_, one_value_);
+        return sem_elem_t(new KeyedSemElemSet(m, one_key_, one_value_));
       }
 
       sem_elem_t extend(SemElem * se) {
@@ -188,7 +188,7 @@ namespace wali
           }
         }
         
-        return new KeyedSemElemSet(m, one_key_, one_value_);
+        return sem_elem_t(new KeyedSemElemSet(m, one_key_, one_value_));
       }
       
       sem_elem_t combine(SemElem * se) {
@@ -210,7 +210,7 @@ namespace wali
           }
         }
 
-        return new KeyedSemElemSet(m, one_key_, one_value_);
+        return sem_elem_t(new KeyedSemElemSet(m, one_key_, one_value_));
       }
 
       bool equal(SemElem * se) const {
@@ -373,14 +373,14 @@ namespace wali
       ///
       /// Actually returns one
       sem_elem_t one() const {
-        static sem_elem_t o = new PositionKey(SpecialOne);
+        static sem_elem_t o(new PositionKey(SpecialOne));
         return o;
       }
 
       ///
       /// This actually returns zero
       sem_elem_t zero() const {
-        static sem_elem_t z = new PositionKey(SpecialZero);
+        static sem_elem_t z(new PositionKey(SpecialZero));
         return z;
       }
 
@@ -402,7 +402,7 @@ namespace wali
             return that;
           }
           else {
-            return new PositionKey(*that);
+            return sem_elem_t(new PositionKey(*that));
           }
         }
         if (that->isOne()) {
@@ -410,7 +410,7 @@ namespace wali
             return this;
           }
           else {
-            return new PositionKey(*this);
+            return sem_elem_t(new PositionKey(*this));
           }
         }
         

@@ -26,12 +26,12 @@ namespace wali {
 
       sem_elem_t FunctionalWeight::one() const {
         // TODO: Find a better way to do this
-        return new FunctionalWeight(ltrans, rtrans);
+        return sem_elem_t(new FunctionalWeight(ltrans, rtrans));
       }
 
       sem_elem_t FunctionalWeight::zero() const {
         // TODO: Find a better way to do this
-        return new FunctionalWeight(ltrans, rtrans);
+        return sem_elem_t(new FunctionalWeight(ltrans, rtrans));
       }
 
       // Extend is compose^{reversed}

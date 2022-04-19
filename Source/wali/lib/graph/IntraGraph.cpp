@@ -1669,7 +1669,7 @@ namespace wali {
             int updatable_no = edges[*ei].updatable_no;
             if(updateEdgesSet.find(updatable_no) == updateEdgesSet.end()){
               updateEdges.push_back(updatable_no);
-              sem_elem_t wt = edges[*ei].exp->evaluate(this).get();
+              sem_elem_t wt = sem_elem_t(edges[*ei].exp->evaluate(this).get());
               weights.push_back(wt);
               //update the edge anyway. This weight should not be used, except for debugging.
               edges[*ei].weight = weights.back();

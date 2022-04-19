@@ -46,16 +46,16 @@ namespace wali
       }
 
       Witness& operator*()   const {
-        assert(0 != ptr);
-        return *ptr.get();
+        assert(ptr);
+        return *ptr;
       }
 
       bool operator<(std::shared_ptr<Witness> const & that) const {
         return ptr < that;
       }
 
-      bool is_empty() const { return !is_empty(); }
-      bool is_valid() const { return ptr==true;}
+      bool is_empty() const { return !is_valid(); }
+      bool is_valid() const { return ptr.operator bool();}
 
       private:
       std::shared_ptr<Witness> ptr;

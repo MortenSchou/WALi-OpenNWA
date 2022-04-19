@@ -6,7 +6,6 @@
  */
 
 #include "wali/Common.hpp"
-#include "wali/Countable.hpp"
 #include "wali/SemElem.hpp"
 #include "wali/MergeFn.hpp"
 
@@ -38,10 +37,10 @@ namespace wali
      * (i.e., the user) to take care of proper chaining. WALi assumes that
      * unwrap will return an element from the user defined weight domain.
      */
-    class Wrapper : public Countable
+    class Wrapper
     {
       public:
-        Wrapper() : Countable() {}
+        Wrapper() = default;
 
         virtual ~Wrapper() {}
 
