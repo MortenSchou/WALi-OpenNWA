@@ -11,6 +11,7 @@
 #include "wali/KeySource.hpp"
 #include "wali/StringSource.hpp"
 #include "wali/IntSource.hpp"
+#include "wali/LLVMValueSource.hpp"
 #include "wali/KeyPairSource.hpp"
 #include "wali/KeySetSource.hpp"
 #include <memory>
@@ -81,6 +82,11 @@ namespace wali
     return getKey( new IntSource(i) );
   }
 
+  Key KeySpace::getKey( const llvm::Value *v )
+  {
+    return getKey( new LLVMValueSource(v) );
+  }
+
   /**
    * Wrapper method for createing a KeyPairSource and
    * inserting it into the KeySpace
@@ -90,7 +96,7 @@ namespace wali
     return getKey( new KeyPairSource(k1,k2) );
   }
 
-  // @author Amanda Burton  
+  // @author Amanda Burton
   wali_key_t KeySpace::getKey( std::set<wali_key_t> kys )
   {
     return getKey( new KeySetSource(kys) );
@@ -169,7 +175,7 @@ namespace wali
 
   /**
    * Return std::string rep of KeySource. Looks up the key and calls
-   * KeySource::toString(). 
+   * KeySource::toString().
    *
    * @see KeySource
    */
@@ -185,4 +191,3 @@ namespace wali
   }
 
 } // namespace wali
-

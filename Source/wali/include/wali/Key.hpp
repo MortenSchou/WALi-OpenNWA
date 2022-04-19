@@ -15,6 +15,9 @@
 #include <set>
 #include <memory>
 
+namespace llvm {
+  class Value;
+} // namespace llvm
 
 namespace wali
 {
@@ -52,6 +55,7 @@ namespace wali
   Key getKey( const std::string& s );
   Key getKey( const char* s );
   Key getKey( int i );
+  Key getKey( const llvm::Value *v );
   Key getKey( Key k1, Key k2 );
   // @author Amanda Burton
   Key getKey( std::set<Key> ks );
@@ -83,4 +87,3 @@ namespace wali
 } // namespace wali
 
 #endif  // wali_KEY_GUARD
-

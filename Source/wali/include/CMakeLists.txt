@@ -1,3 +1,3 @@
-#
-# Für die Header-Dateien benötigt man nur extrem selten CMake-Funktionalität.
-#
+include(GNUInstallDirs)
+install(DIRECTORY wali/
+        DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/wali)

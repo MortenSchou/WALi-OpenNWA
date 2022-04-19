@@ -1,29 +1,30 @@
 cmake_minimum_required (VERSION 3.0)
 
-set(CMAKE_C_COMPILER clang)
-set(CMAKE_CXX_COMPILER clang++)
-
 project (wali)
 set(CMAKE_PROJECT_NAME "wali")
 
-set(CMAKE_EXPORT_COMPILE_COMMANDS YES)
+if(NOT DEFINED CMAKE_EXPORT_COMPILE_COMMANDS)
+    set(CMAKE_EXPORT_COMPILE_COMMANDS YES)
+endif(NOT DEFINED CMAKE_EXPORT_COMPILE_COMMANDS)
+if(NOT DEFINED CMAKE_CXX_STANDARD)
 set(CMAKE_CXX_STANDARD 14)
+endif(NOT DEFINED CMAKE_CXX_STANDARD)
+if(NOT DEFINED CMAKE_CXX_STANDARD_REQUIRED)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+endif(NOT DEFINED CMAKE_CXX_STANDARD_REQUIRED)
+if(NOT DEFINED CMAKE_CXX_FLAGS)
 set(CMAKE_CXX_FLAGS "-Wall -Wextra")
+endif(NOT DEFINED CMAKE_CXX_FLAGS)
+if(NOT DEFINED CMAKE_CXX_EXTENSIONS)
+set(CMAKE_CXX_EXTENSIONS OFF)
+endif(NOT DEFINED CMAKE_CXX_EXTENSIONS)
 
-# Add the plang subdirectories
+if(NOT DEFINED LLVM_MAIN_SRC_DIR)
+  # Find an include llvm if we build out of tree
+  find_package(LLVM REQUIRED CONFIG)
+  find_library(LLVM_LIBRARY NAMES llvm)
+  include_directories(${LLVM_INCLUDE_DIRS})
+  link_directories(${LLVM_LIB_PATH} ${LLVM_LIBRARY_DIRS})
+endif()
+
 add_subdirectory(Source)
-
-# Hier wird ein ausführbares Programm erzeugt.
-# Die nächsten beiden CMake Anweisungen 'add_executable' und
-# 'target_link_libraries' können auch auskommentiert werden, falls nur die
-# Bibliothek(en) erzeugt werden soll(en). Man kann falls nötige auch mehrere
-# ausführbare Programme erzeugen, indem weiter Anweisungen dieser Art 
-# hinzugefügt werde.
-#add_executable(myprogram
-#  main.cpp
-#)
-
-#target_link_libraries(wali
-#  waliLib
-#)

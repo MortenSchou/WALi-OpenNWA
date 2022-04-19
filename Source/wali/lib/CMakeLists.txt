@@ -16,9 +16,18 @@ ENDFOREACH(item)
 
 
 add_library(wali # Name der Bibliothek
-		STATIC # Art des Linkens (statisch oder dynamisch)
 		${WALI_SRC} # Quellcode der zur dieser Bibliothek gehören soll
 )
+
+set(LLVM_LINK_COMPONENTS
+  Support
+  Core
+)
+if(USE_LLVM_FAT_LIB)
+  llvm_config(wali USE_SHARED ${LLVM_LINK_COMPONENTS})
+else()
+  llvm_config(wali ${LLVM_LINK_COMPONENTS})
+endif()
 
 # Falls nötig und die Bibliothek selbst Abhangigkeiten besitzt,
 # kann man dieser hiermit dazu linken. Man sollte allerdings
@@ -33,4 +42,4 @@ set_target_properties(wali
 	PREFIX "lib" # Der typische 'lib' Prefix einer Bibliothek auf Unix-Systemen
 )
 
-install(TARGETS wali ARCHIVE DESTINATION lib)
+install(TARGETS wali ARCHIVE DESTINATION lib LIBRARY DESTINATION lib)
