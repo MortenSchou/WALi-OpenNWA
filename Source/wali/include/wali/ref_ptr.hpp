@@ -59,7 +59,7 @@ namespace wali
       /**
        * @brief This will succeed if S is a subclass of T.
        */
-      template< typename S > ref_ptr<T>( const ref_ptr<S>& rp ) {
+      template< typename S > ref_ptr( const ref_ptr<S>& rp ) {
         acquire( rp.get_ptr() );
       }
 
