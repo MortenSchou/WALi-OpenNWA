@@ -11,7 +11,6 @@
 #include "wali/KeySource.hpp"
 #include "wali/StringSource.hpp"
 #include "wali/IntSource.hpp"
-#include "wali/LLVMValueSource.hpp"
 #include "wali/KeyPairSource.hpp"
 #include "wali/KeySetSource.hpp"
 
@@ -79,11 +78,6 @@ namespace wali
   Key KeySpace::getKey( int i )
   {
     return getKey( new IntSource(i) );
-  }
-
-  Key KeySpace::getKey( const llvm::Value *v )
-  {
-    return getKey( new LLVMValueSource(v) );
   }
 
   /**

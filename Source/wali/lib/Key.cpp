@@ -69,11 +69,6 @@ namespace wali
     return getKeySpace()->getKey(i);
   }
 
-  Key getKey( const llvm::Value *v )
-  {
-    return getKeySpace()->getKey(v);
-  }
-
   Key getKey( Key k1, Key k2 )
   {
     return getKeySpace()->getKey(k1,k2);
